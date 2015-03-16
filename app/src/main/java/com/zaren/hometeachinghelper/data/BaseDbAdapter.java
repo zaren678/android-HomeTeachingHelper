@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,13 +15,12 @@ import java.util.List;
  */
 public class BaseDbAdapter
 {
-    protected final Context mContext;
     protected SQLiteDatabase mDb;
-    private HomeTeachingSqlDatabaseHelper mDbHelper;
+    private SQLiteOpenHelper mDbHelper;
 
-    public BaseDbAdapter( Context aContext )
+    public BaseDbAdapter( SQLiteOpenHelper aHelper )
     {
-        mContext = aContext;
+        mDbHelper = aHelper;
     }
 
     /**
@@ -30,7 +30,6 @@ public class BaseDbAdapter
      */
     public void open() throws SQLException
     {
-        mDbHelper = new HomeTeachingSqlDatabaseHelper( mContext );
         mDb = mDbHelper.getWritableDatabase();
     }
 
@@ -48,7 +47,6 @@ public class BaseDbAdapter
         if( mDbHelper != null )
         {
             mDbHelper.close();
-            mDbHelper = null;
         }
     }
 
@@ -109,7 +107,7 @@ public class BaseDbAdapter
     {
         if( mDb != null )
         {
-            if( aQueryEntries != null || !aQueryEntries.isEmpty() )
+            if( aQueryEntries != null && !aQueryEntries.isEmpty() )
             {
                 StringBuilder theWhereClause = new StringBuilder();
                 List< String > theWhereValues = new ArrayList<>();

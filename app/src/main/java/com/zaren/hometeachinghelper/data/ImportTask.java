@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -38,7 +40,7 @@ public class ImportTask extends AsyncTask< File, Void, Boolean >
     }
 
     @Override
-    protected void onPostExecute( final Boolean aResult )
+    protected void onPostExecute( @NotNull final Boolean aResult )
     {
         if( aResult )
         {
@@ -54,7 +56,7 @@ public class ImportTask extends AsyncTask< File, Void, Boolean >
     }
 
     @Override
-    protected Boolean doInBackground( final File... aParams )
+    protected Boolean doInBackground( @NotNull final File... aParams )
     {
         File theFile = aParams[ 0 ];
         try
