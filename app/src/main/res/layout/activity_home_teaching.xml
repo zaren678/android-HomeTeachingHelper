@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    tools:context="com.zaren.hometeachinghelper.HomeTeachingActivity">
+    tools:context="com.zaren.hometeachinghelper.homeTeaching.HomeTeachingActivity">
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"

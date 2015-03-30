@@ -1,4 +1,4 @@
-package com.zaren.hometeachinghelper;
+package com.zaren.hometeachinghelper.homeTeaching;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.zaren.hometeachinghelper.data.HomeTeachingDbAdapter;
+import com.zaren.hometeachinghelper.Application;
+import com.zaren.hometeachinghelper.R;
+import com.zaren.hometeachinghelper.data.HomeTeachingSqlBrite;
 import com.zaren.hometeachinghelper.data.ImportTask;
 import com.zaren.hometeachinghelper.utils.HeadlessFragmentBase;
 
@@ -31,7 +33,6 @@ import butterknife.InjectView;
 
 public class HomeTeachingActivity extends ActionBarActivity
 {
-    private static final String TAG = HomeTeachingActivity.class.getSimpleName();
     private static final String IMPORT_FRAGMENT = "import_fragment";
     private static final int PICKFILE_RESULT_CODE = 1;
 
@@ -42,7 +43,7 @@ public class HomeTeachingActivity extends ActionBarActivity
     {
         private ImportTask mTask;
 
-        public void startImport( HomeTeachingDbAdapter aDb, File aCsvFile )
+        public void startImport( HomeTeachingSqlBrite aDb, File aCsvFile )
         {
             Activity theActivity = getActivity();
             if( theActivity != null )
@@ -53,23 +54,15 @@ public class HomeTeachingActivity extends ActionBarActivity
         }
     }
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    @InjectView( R.id.pager ) ViewPager mViewPager;
-    @InjectView( R.id.tabs ) PagerSlidingTabStrip mTabs;
+    @InjectView(R.id.pager) ViewPager mViewPager;
+    @InjectView(R.id.tabs) PagerSlidingTabStrip mTabs;
 
-    @Inject HomeTeachingDbAdapter mDb;
+    @Inject HomeTeachingSqlBrite mDb;
 
     private ImportFragment mImportFragment;
 
@@ -149,17 +142,25 @@ public class HomeTeachingActivity extends ActionBarActivity
     public class SectionsPagerAdapter extends FragmentPagerAdapter
     {
 
+        private SparseArray<String> mTitles = new SparseArray<>();
         public SectionsPagerAdapter( FragmentManager fm )
         {
             super( fm );
+            mTitles.put( 0, "Home Teachers" );
+            mTitles.put( 1, "Section 1" );
+            mTitles.put( 2, "Section 2" );
         }
 
         @Override
         public Fragment getItem( int position )
         {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance( position + 1 );
+            switch( position )
+            {
+                case 0:
+                    return HomeTeachersFragment.newInstance();
+                default:
+                    return PlaceholderFragment.newInstance( position + 1 );
+            }
         }
 
         @Override
@@ -172,17 +173,7 @@ public class HomeTeachingActivity extends ActionBarActivity
         @Override
         public CharSequence getPageTitle( int position )
         {
-            Locale l = Locale.getDefault();
-            switch( position )
-            {
-                case 0:
-                    return getString( R.string.title_section1 ).toUpperCase( l );
-                case 1:
-                    return getString( R.string.title_section2 ).toUpperCase( l );
-                case 2:
-                    return getString( R.string.title_section3 ).toUpperCase( l );
-            }
-            return null;
+            return mTitles.get( position );
         }
     }
 

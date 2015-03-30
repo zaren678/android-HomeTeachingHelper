@@ -1,12 +1,11 @@
 package com.zaren.hometeachinghelper.data;
 
-import android.util.Log;
-
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.IOException;
 
 import lombok.Getter;
+import timber.log.Timber;
 
 /**
  * Created by John on 3/7/2015.
@@ -54,11 +53,11 @@ class HomeTeachingRecord
         {
             if( theDistrictString.isEmpty() )
             {
-                Log.w( TAG, "Failed to parse district from empty string" );
+                Timber.w( "Failed to parse district from empty string" );
             }
             else
             {
-                Log.e( TAG, "Failed to parse district from " + aRecord.get( HomeTeachingParser.HT_DISTRICT ) );
+                Timber.e( "Failed to parse district from " + aRecord.get( HomeTeachingParser.HT_DISTRICT ) );
             }
         }
 

@@ -22,7 +22,7 @@ public class HomeTeachingDbAdapter extends BaseDbAdapter
                                         final String aHomeTeacherEmail )
     {
 
-
+        return 0;
     }
 
     public long addOrUpdateHtHousehold( final String aHousehold,
@@ -36,7 +36,7 @@ public class HomeTeachingDbAdapter extends BaseDbAdapter
                                         final String aHouseholdCountry )
     {
 
-
+        return 0;
     }
 
     public long addOrUpdateHtSupervisor( final int aDistrict,
@@ -45,7 +45,7 @@ public class HomeTeachingDbAdapter extends BaseDbAdapter
                                          final String aSupervisorEmail )
     {
 
-
+        return 0;
     }
 
     public void addOrReplaceHtAssignment( final long aSupervisorId,
@@ -53,6 +53,6 @@ public class HomeTeachingDbAdapter extends BaseDbAdapter
                                           final long aHt2Id,
                                           final long aHouseholdId )
     {
-
+        return;
     }
 }

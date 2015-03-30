@@ -1,7 +1,6 @@
 package com.zaren.hometeachinghelper.data;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -14,6 +13,8 @@ import java.nio.charset.Charset;
 import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import timber.log.Timber;
 
 /**
  * Parses home teaching csv files exported from MLS.
@@ -98,7 +99,7 @@ public class HomeTeachingParser implements Iterable< HomeTeachingRecord >, Close
                 }
                 catch( IOException e )
                 {
-                    Log.e( TAG, "Invalid Record: " + e );
+                    Timber.e( "Invalid Record: " + e );
                 }
                 catch( NoSuchElementException e )
                 {

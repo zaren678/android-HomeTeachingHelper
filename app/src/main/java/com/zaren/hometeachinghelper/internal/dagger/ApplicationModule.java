@@ -20,7 +20,6 @@ public class ApplicationModule
 {
     private final Application mApplication;
 
-
     public ApplicationModule( final Application aApplication )
     {
         mApplication = aApplication;
@@ -38,11 +37,4 @@ public class ApplicationModule
     {
         return PreferenceManager.getDefaultSharedPreferences( mApplication );
     }
-
-//    @Provides
-//    @Singleton
-//    HomeTeachingDbAdapter provideHomeTeachingDatabase()
-//    {
-//        return new HomeTeachingDbAdapter( mApplication );
-//    }
 }

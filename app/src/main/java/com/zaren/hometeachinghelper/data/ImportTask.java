@@ -3,7 +3,6 @@ package com.zaren.hometeachinghelper.data;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -12,20 +11,21 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 
+import timber.log.Timber;
+
 /**
  * Task for importing data from a csv file into our database
  */
 public class ImportTask extends AsyncTask< File, Void, Boolean >
 {
-    private static final String TAG = ImportTask.class.getSimpleName();
-    private final HomeTeachingDbAdapter mDbAdapter;
+    private final HomeTeachingSqlBrite mDb;
     private final Context mContext;
     private MaterialDialog mDialog;
 
-    public ImportTask( final Context aContext, final HomeTeachingDbAdapter aDb )
+    public ImportTask( final Context aContext, final HomeTeachingSqlBrite aDb )
     {
         mContext = aContext;
-        mDbAdapter = aDb;
+        mDb = aDb;
     }
 
     @Override
@@ -63,8 +63,7 @@ public class ImportTask extends AsyncTask< File, Void, Boolean >
         {
             try
             {
-                mDbAdapter.open();
-                mDbAdapter.beginTransaction();
+                mDb.beginTransaction();
                 //TODO detect what type we are parsing, VT or HT
                 //TODO clear db?
 
@@ -81,27 +80,27 @@ public class ImportTask extends AsyncTask< File, Void, Boolean >
                             }
                             catch( IOException | HomeTeachingDatabaseException e )
                             {
-                                Log.e( TAG, "Failed to process record: " + e );
+                                Timber.e( "Failed to process record: " + e );
                             }
                         }
                     }
                     else
                     {
-                        Log.d( TAG, "Import task was cancelled" );
+                        Timber.d( "Import task was cancelled" );
                         break;
                     }
                 }
-                mDbAdapter.setTransactionSuccessful();
+                mDb.setTransactionSuccessful();
             }
             finally
             {
-                mDbAdapter.endTransaction();
-                mDbAdapter.close();
+                mDb.endTransaction();
+                mDb.close();
             }
         }
         catch( IOException e )
         {
-            Log.e( TAG, "Failed to parse file " + theFile + ":" + e );
+            Timber.e( "Failed to parse file " + theFile + ":" + e );
             return false;
         }
 
@@ -110,31 +109,39 @@ public class ImportTask extends AsyncTask< File, Void, Boolean >
 
     private void processRecord( @NonNull final HomeTeachingRecord aRecord ) throws IOException, HomeTeachingDatabaseException
     {
-        long theHt1Id = mDbAdapter.addOrUpdateHomeTeacher( aRecord.getQuorum(),
-                                                           aRecord.getHomeTeacher1(),
-                                                           aRecord.getHomeTeacher1Phone(),
-                                                           aRecord.getHomeTeacher1Email() );
+        long theHt1Id = -1;
+        if( !aRecord.getHomeTeacher1().isEmpty() )
+        {
+            theHt1Id = mDb.addOrUpdateHomeTeacher( aRecord.getQuorum(),
+                                                   aRecord.getHomeTeacher1(),
+                                                   aRecord.getHomeTeacher1Phone(),
+                                                   aRecord.getHomeTeacher1Email() );
+        }
 
-        long theHt2Id = mDbAdapter.addOrUpdateHomeTeacher( aRecord.getQuorum(),
-                                                           aRecord.getHomeTeacher2(),
-                                                           aRecord.getHomeTeacher2Phone(),
-                                                           aRecord.getHomeTeacher2Email() );
+        long theHt2Id = -1;
+        if( !aRecord.getHomeTeacher2().isEmpty() )
+        {
+            theHt2Id = mDb.addOrUpdateHomeTeacher( aRecord.getQuorum(),
+                                                   aRecord.getHomeTeacher2(),
+                                                   aRecord.getHomeTeacher2Phone(),
+                                                   aRecord.getHomeTeacher2Email() );
+        }
 
-        long theHouseholdId = mDbAdapter.addOrUpdateHtHousehold( aRecord.getHousehold(),
-                                                                 aRecord.getHouseholdPhone(),
-                                                                 aRecord.getHouseholdEmail(),
-                                                                 aRecord.getHouseholdStreet1(),
-                                                                 aRecord.getHouseholdStreet2(),
-                                                                 aRecord.getHouseholdCity(),
-                                                                 aRecord.getHouseholdPostal(),
-                                                                 aRecord.getHouseholdState(),
-                                                                 aRecord.getHouseholdCountry() );
-
-        long theSupervisorId = mDbAdapter.addOrUpdateHtSupervisor( aRecord.getDistrict(),
-                                                                   aRecord.getSupervisor(),
-                                                                   aRecord.getSupervisorPhone(),
-                                                                   aRecord.getSupervisorEmail() );
-
-        mDbAdapter.addOrReplaceHtAssignment( theSupervisorId, theHt1Id, theHt2Id, theHouseholdId );
+//        long theHouseholdId = mDb.addOrUpdateHtHousehold( aRecord.getHousehold(),
+//                                                                 aRecord.getHouseholdPhone(),
+//                                                                 aRecord.getHouseholdEmail(),
+//                                                                 aRecord.getHouseholdStreet1(),
+//                                                                 aRecord.getHouseholdStreet2(),
+//                                                                 aRecord.getHouseholdCity(),
+//                                                                 aRecord.getHouseholdPostal(),
+//                                                                 aRecord.getHouseholdState(),
+//                                                                 aRecord.getHouseholdCountry() );
+//
+//        long theSupervisorId = mDb.addOrUpdateHtSupervisor( aRecord.getDistrict(),
+//                                                                   aRecord.getSupervisor(),
+//                                                                   aRecord.getSupervisorPhone(),
+//                                                                   aRecord.getSupervisorEmail() );
+//
+//        mDb.addOrReplaceHtAssignment( theSupervisorId, theHt1Id, theHt2Id, theHouseholdId );
     }
 }
