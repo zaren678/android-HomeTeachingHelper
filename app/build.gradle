@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.trello.victor'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -29,7 +30,10 @@ android {
     }
 
     sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        main {
+            java.srcDirs += 'src/main/kotlin'
+            svg.srcDir 'src/main/svg'
+        }
     }
 
     packagingOptions {
@@ -47,7 +51,7 @@ dependencies {
     compile rootProject.ext.cardView
     compile rootProject.ext.recyclerView
     compile rootProject.ext.sqlBrite
-    compile rootProject.ext.stetho
+    debugCompile rootProject.ext.stetho
     compile rootProject.ext.timber
     compile rootProject.ext.autoParcel
     compile rootProject.ext.rxAndroid

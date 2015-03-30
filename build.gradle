@@ -19,6 +19,9 @@ buildscript {
 
         //for kotlin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
+        //for victor
+        classpath 'com.trello:victor:0.1.2'
     }
 }
 

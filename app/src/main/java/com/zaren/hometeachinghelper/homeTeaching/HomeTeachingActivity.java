@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.zaren.hometeachinghelper.Application;
@@ -112,6 +113,9 @@ public class HomeTeachingActivity extends ActionBarActivity
                 Intent theIntent = new Intent( Intent.ACTION_GET_CONTENT );
                 theIntent.setType( "*/*" );
                 startActivityForResult( theIntent, PICKFILE_RESULT_CODE );
+                return true;
+            case R.id.action_filter:
+                Toast.makeText( this, "FILTER", Toast.LENGTH_LONG ).show();
                 return true;
         }
 

@@ -2,11 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.zaren.hometeachinghelper.homeTeaching.HomeTeachingActivity">
+    <!--suppress AndroidDomInspection -->
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_filter"
+        android:title="@string/filter"
+        android:icon="@drawable/ic_filter"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/import_from_mls"
         android:title="@string/import_from_mls" />

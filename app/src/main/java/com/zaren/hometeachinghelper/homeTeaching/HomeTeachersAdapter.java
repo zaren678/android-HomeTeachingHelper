@@ -32,12 +32,13 @@ public class HomeTeachersAdapter extends RecyclerView.Adapter< HomeTeachersAdapt
     public HomeTeachersAdapter( HomeTeachingSqlBrite aDb )
     {
         mSubscription = aDb.getAllHomeTeachers()
-                           .observeOn( Schedulers.computation() )
+                           .subscribeOn( Schedulers.computation() )
+
                            .map( aHomeTeacherList ->
                                  {
                                      return aHomeTeacherList;
                                  } )
-                           .subscribeOn( AndroidSchedulers.mainThread() )
+                           .observeOn( AndroidSchedulers.mainThread() )
                            .subscribe( aHomeTeachers ->
                                        {
                                            mData = aHomeTeachers;
